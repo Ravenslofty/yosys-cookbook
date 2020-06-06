@@ -43,10 +43,10 @@ This runs FPGA mapping several times, producing a generally-better mapping at th
 ### Debug options
 
 - `-run [start label]:[stop label]` - `synth_ecp5` is made up of smaller passes; with this command you can stop and explore the netlist at a certain point.
-- `-nocc2` - this disables the use of carry chains, using Brent-Kung addition in logic instead. This generally slows down the design and bloats it, but can be used to check for bugs in carry chain mapping.
+- `-nocc2` - this disables the use of carry chains, using Brent-Kung addition in logic instead. This generally slows down the design and increases area, but can be used to check for bugs in carry chain mapping.
 - `-nodffe` - this disables the use of flops with clock enables, which can result in less routing congestion and expose optimisations. You can get finer control over this with `-dffe_min_ce_use` though.
-- `-nobram` - this disables the use of block RAM for memories, forcing Yosys to build memories out of LUTRAM and flops. This generally bloats the design, but can be used to check for bugs in memory mapping.
-- `-nolutram` - this disables the use of LUT RAM for memories, forcing Yosys to build memories out of flops. This generally bloats the design, but can be used to check for bugs in memory mapping.
+- `-nobram` - this disables the use of block RAM for memories, forcing Yosys to build memories out of LUTRAM and flops. This majorly increases design area and reduces performance, but can be used to check for bugs in memory mapping.
+- `-nolutram` - this disables the use of LUT RAM for memories, forcing Yosys to build memories out of flops. This increases design area and reduces performance, but can be used to check for bugs in memory mapping.
 - `-nodsp` - this disables the use of DSP slices for multipliers, and instead multipliers are built as shift/add cascades. This can be used to check for bugs in multiplier mapping.
 
 [BLIF]: https://www.cse.iitb.ac.in/~supratik/courses/cs226/spr16/blif.pdf

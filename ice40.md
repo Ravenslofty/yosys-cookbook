@@ -38,9 +38,9 @@ iCE40UP (UltraPlus): Use `yosys -p "synth_ice40 -dsp -json filename.json" [files
 ### Debug options
 
 - `-run [start label]:[stop label]` - `synth_ice40` is made up of smaller passes; with this command you can stop and explore the netlist at a certain point.
-- `-nocarry` - this disables the use of carry chains, using Brent-Kung addition in logic. This generally slows down the design and bloats it, but can be used to check for bugs in carry chain mapping.
+- `-nocarry` - this disables the use of carry chains, using Brent-Kung addition in logic. This generally slows down the design and increases area, but can be used to check for bugs in carry chain mapping.
 - `-nodffe` - this disables the use of flops with clock enables, which can result in less routing congestion and expose optimisations. You can get finer control over this with `-dffe_min_ce_use` though.
-- `-nobram` - this disables the use of block RAM for memories, forcing Yosys to build memories out of flops. This generally bloats the design, but can be used to check for bugs in memory mapping.
+- `-nobram` - this disables the use of block RAM for memories, forcing Yosys to build memories out of flops. This majorly increases design area and reduces performance, but can be used to check for bugs in memory mapping.
 
 [BLIF]: https://www.cse.iitb.ac.in/~supratik/courses/cs226/spr16/blif.pdf
 [EDIF]: https://www.iue.tuwien.ac.at/phd/minixhofer/node53.html
