@@ -39,7 +39,7 @@ Then, run `quartus_map -c example example` to get Quartus to read the netlist, a
 
 ### Debug options
 
-- `-quartus` - this outputs a netlist using Quartus cells, rather than the internal MISTRAL_* cells. See the note on cell formats.
+- `-quartus` - this outputs a netlist using Quartus cells, rather than the internal MISTRAL_* cells. See [the note on cell formats](#note-on-cell-formats).
 - `-run [start label]:[stop label]` - `synth_intel_alm` is made up of smaller passes; with this command you can stop and explore the netlist at a certain point.
 - `-nobram` - this disables the use of block RAM for memories, forcing Yosys to build memories out of LUTRAM and flops. This majorly increases design area and reduces performance, but can be used to check for bugs in memory mapping.
 - `-nolutram` - this disables the use of LUT RAM for memories, forcing Yosys to build memories out of flops. This increases design area and reduces performance, but can be used to check for bugs in memory mapping.
