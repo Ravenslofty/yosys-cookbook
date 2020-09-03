@@ -17,7 +17,7 @@ ABC and ABC9 approach this problem in very different ways.
 
 Let's consider a highly simplified view of an FPGA:
 - An FPGA is made up of a network of inputs that connect through LUTs to a network of outputs. These inputs may actually be pins, flops, memory blocks, or whatever, but they're all the same to us.
-- Each LUT has a delay between an input and its output of 1 delay unit, and this is constant for all inputs of a LUT, and for all sizes of LUT up to the maximum LUT size allowed; e.g. the delay between the input of a LUT2 and its output is the same as the delay between the input of a LUT6 and its output.
+- Each LUT has 1 unit of delay between an input and its output, and this is constant for all inputs of a LUT, and for all sizes of LUT up to the maximum LUT size allowed; e.g. the delay between the input of a LUT2 and its output is the same as the delay between the input of a LUT6 and its output.
 - A LUT may take up a variable number of area units. This is constant for each size of LUT; e.g. a LUT4 may take up 1 unit of area, but a LUT5 may take up 2 units of area, but this applies for all LUT4s and LUT5s.
 
 This is known as the "unit delay model", because each LUT uses one unit of delay.
