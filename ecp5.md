@@ -20,11 +20,7 @@ This runs FPGA mapping several times, producing a generally-better mapping at th
 
 - `-top` - generally Yosys can autodetect the top-level module of your code; if it gets it wrong or you want to select a different top-level module, you can use `-top modulename` to set it.
 - `-noflatten` - Yosys generally inlines modules for efficiency, but `-noflatten` tells it not to: this gives you per-module synthesis statistics that can be used to discover expensive modules that can be optimised.
-- `-abc9` - ABC9 can better optimise carry chains and produces a faster, smaller, netlist than the default ABC mapping used when `-abc9` is not specified.
-
-### Sometimes useful
-
-- `-nowidelut` - by default, synthesis will mux LUT4s together to produce larger LUTs to reduce delay; disabling this reduces LUT duplication and improves routability, but increases netlist delay.
+- `-abc9` - ABC9 can better optimise carry chains and produces a faster, smaller, netlist than the default ABC mapping used when `-abc9` is not specified. If you are struggling to meet a timing target, use `-abc9`; it can be just that bit more that you need.
 
 ### Not recommended
 
@@ -32,6 +28,22 @@ This runs FPGA mapping several times, producing a generally-better mapping at th
 - `-retime` - like `-dff`, but it can move flops too to balance logic. Cannot be used in combination with `-abc9`, and ECP5 really benefits from that option.
 - `-abc2` - this runs further logic optimisation before LUT mapping for modest savings in area. Cannot be used in combination with `-abc9`, and ECP5 really benefits from that option.
 - `-asyncprld` - ECP5 flops support the asynchronous load of a value into a flop, and this can be used for latches or set/reset flops. However, Lattice don't use it in synthesis, so it's unclear if it's safe to rely on.
+
+### Not as useful as you think: `-nowidelut`
+
+By default, synthesis will use ECP5's hard multiplexers to connect LUT4s together to produce larger LUTs to reduce delay; disabling this reduces LUT duplication and improves routability, but increases netlist delay.
+
+ABC9 often finds a very low delay mapping and so does not have much opportunity to reduce area without sacrificing delay.
+I see a lot of people thinking that `-nowidelut` solves the area problem while not being aware of the delay problem.
+
+I think a better solution is to more closely inform ABC9 of the actual delay target involved here:
+- take your target frequency in megahertz (for this example I will be using 50 MHz)
+- double it to account for delay in routing (so, 100 MHz in my example).
+- convert this to picoseconds, rounding up if necessary (There are 1e12 picoseconds in a second, so `1e12 / 100e6 = 10000` picoseconds for a 100MHz target)
+- add `scratchpad -set abc9.D <picoseconds>` before your call to `synth_ecp5 -abc9` (in my example this is `scratchpad -set abc9.D 10000`)
+
+I've found doubling the target frequency to be a good starting point between giving ABC9 room to recover area while not missing the initial delay target.
+If this results in a network substantially above your target frequency, feel free to increase `abc9.D`, and conversely if it fails the timing target, decrease `abc9.D`.
 
 ### Alternative netlist formats
 
